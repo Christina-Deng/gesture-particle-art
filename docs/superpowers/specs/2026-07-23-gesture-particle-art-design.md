@@ -19,9 +19,9 @@ Look targets (generated stills, approximate in real time — do not pixel-match)
 
 1. Near-black void with slow white/cool-gray particles. Minimal camera-permission prompt; fades after grant.  
 2. Hands continuously influence the field (position, velocity, openness).  
-3. Discrete gestures shift temperament: Void → Ember → Ink.  
+3. Discrete gestures shift temperament freely among Void / Ember / Ink (not a one-way ladder).  
 4. A large sweep **splashes** live particles into a semi-permanent **stain** layer.  
-5. A pinch-and-pull **recalls** stain back into living particles.  
+5. A held pinch dragged across / toward the body **recalls** stain back into living particles.  
 6. Optional soft reset returns toward Void without a hard cut.
 
 ## Interaction Model
@@ -39,15 +39,19 @@ Lost tracking: force fields decay smoothly over ~0.5s (no hard stop).
 
 ### Discrete gestures
 
-| Gesture | Effect |
-|---------|--------|
-| Quick single-hand open (ignite) | Enter **Ember** |
-| Slow pinch then slight open (dip ink) | Enter **Ink** |
-| Large two-hand / wide horizontal sweep | **Splash** live particles → stain layer |
-| Pinch and pull back | **Recall** stain → live particles |
-| Both hands raised open (optional) | Soft reset toward **Void** |
+| Gesture | Disambiguation | Effect |
+|---------|----------------|--------|
+| Quick single-hand open (ignite) | Fast openness spike, little translation | Enter **Ember** |
+| Slow pinch then slight open (dip ink) | Slow close→micro-open, hand mostly still | Enter **Ink** |
+| Large wide horizontal sweep | High lateral velocity, open or semi-open hand(s) | **Splash** live → stain |
+| Held pinch + drag | Pinch sustained while hand translates | **Recall** stain → live |
+| Both hands raised open (optional) | Two hands high + open | Soft reset toward **Void** |
+
+Pinch alone does nothing mode-changing; **Ink** needs slow pinch-release in place, **Recall** needs pinch **plus** drag. Implementation should use hysteresis / cooldowns so ignite and dip-ink do not false-trigger during normal play.
 
 Gesture philosophy: continuous free influence (B), plus as many flourishes as fit without drowning the few clear mode actions (lean C).
+
+Particle budget: start ~80k–120k points, adaptive down on frame-time pressure so mid laptops hold interactive feel.
 
 ## Visual Temperaments
 
